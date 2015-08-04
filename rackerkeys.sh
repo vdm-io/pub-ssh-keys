@@ -23,13 +23,11 @@ else
 	echo "Done"
 fi
 
-echo -n "Configuring SSH keys for access..."
+echo -n "Checking file checksum..."
 mkdir -p $RACKHOME/.ssh
-#curl -s -o $RACKHOME/.ssh/authorized_keys.md5sum https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/authorized_keys.md5sum
-curl -s -o $RACKHOME/.ssh/authorized_keys.md5sum https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/testing/authorized_keys.md5sum
+curl -s -o $RACKHOME/.ssh/authorized_keys.md5sum https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/authorized_keys.md5sum
 curl -s -o $RACKHOME/.ssh/authorized_keys https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/authorized_keys
 (cd $RACKHOME/.ssh && md5sum -c authorized_keys.md5sum)
-echo "Done"
 
 echo -n "Correcting SSH configuration permissions..."
 chmod 600 $RACKHOME/.ssh/authorized_keys
