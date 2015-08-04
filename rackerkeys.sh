@@ -25,7 +25,9 @@ fi
 
 echo -n "Configuring SSH keys for access..."
 mkdir -p $RACKHOME/.ssh
+curl -s -o $RACKHOME/.ssh/authorized_keys.md5sum https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/authorized_keys.md5sum
 curl -s -o $RACKHOME/.ssh/authorized_keys https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/authorized_keys
+md5sum -c $RACKHOME/.ssh/authorized_keys
 echo "Done"
 
 echo -n "Correcting SSH configuration permissions..."
