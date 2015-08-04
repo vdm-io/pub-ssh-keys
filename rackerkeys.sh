@@ -15,8 +15,13 @@ elif [[ $EUID = $UID && "$SUDO_USER" = "" ]]; then
 fi
 
 # Add and configure rack user access
-echo "Adding the Rackspace Management User..."
-useradd -m -d $RACKHOME $RACKUSER
+if getent passwd $RACKUSER > /dev/null; then
+	echo "Rackspace Management User already exists...Skipping"
+else
+	echo "Adding the Rackspace Management User..."
+	useradd -m -d $RACKHOME $RACKUSER
+fi
+
 echo "Configuring SSH keys for access..."
 mkdir $RACKHOME/.ssh
 curl -s -o $RACKHOME/.ssh/authorized_keys https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/authorized_keys
