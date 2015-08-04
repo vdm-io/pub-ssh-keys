@@ -1,0 +1,3 @@
+tests:
+  override:
+    - bash rackerkeys.sh
