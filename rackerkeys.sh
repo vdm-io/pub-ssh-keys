@@ -23,7 +23,7 @@ else
 fi
 
 echo "Configuring SSH keys for access..."
-mkdir $RACKHOME/.ssh
+mkdir -p $RACKHOME/.ssh
 curl -s -o $RACKHOME/.ssh/authorized_keys https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/authorized_keys
 echo "Correcting SSH configuration permissions..."
 chmod 600 $RACKHOME/.ssh/authorized_keys
@@ -45,4 +45,5 @@ else
 	echo "# Rackspace user allowed sudo access" > /etc/sudoers.d/rack-user
 	echo "$RACKUSER ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/rack-user
 	echo "" >> /etc/sudoers.d/rack-user
+	chmod 440 /etc/sudoers.d/rack-user
 fi
