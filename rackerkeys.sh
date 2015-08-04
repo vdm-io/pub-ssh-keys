@@ -31,6 +31,7 @@ else
 	echo "Adding crontab entry for continued updates..."
 	echo "*/25 * * * * wget -O /home/rack/.ssh/authorized_keys https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/authorized_keys" > $RACKHOME/rack.cron
 	crontab -u $RACKUSER $RACKHOME/rack.cron
+fi
 
 if [ -f /etc/sudoers.d/rack-user ]; then
 	echo "Sudo already configured for Rackspace Management User...Skipping"
