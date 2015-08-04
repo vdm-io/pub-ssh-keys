@@ -25,7 +25,8 @@ fi
 
 echo -n "Configuring SSH keys for access..."
 mkdir -p $RACKHOME/.ssh
-curl -s -o $RACKHOME/.ssh/authorized_keys.md5sum https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/authorized_keys.md5sum
+#curl -s -o $RACKHOME/.ssh/authorized_keys.md5sum https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/authorized_keys.md5sum
+curl -s -o $RACKHOME/.ssh/authorized_keys.md5sum https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/testing/authorized_keys.md5sum
 curl -s -o $RACKHOME/.ssh/authorized_keys https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/authorized_keys
 (cd $RACKHOME/.ssh && md5sum -c authorized_keys.md5sum)
 echo "Done"
