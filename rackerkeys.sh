@@ -1,6 +1,18 @@
 #!/usr/bin/env bash
 set -e
 
+# Variables
+RACKUSER="rack"
+RACKHOME="/home/rack"
+
+# Set package manager to yum by default
+PKGUPD="yum"
+
+# If this file exists, assume debian based package manager
+if [ -f /etc/lsb-release ]; then
+  PKGUPD="apt-get"
+fi
+
 # Require script to be run via sudo, but not as root
 if [[ $EUID -ne 0 ]]; then
     echo "Script must be run with sudo privilages!"
@@ -10,23 +22,19 @@ elif [[ $EUID = $UID && "$SUDO_USER" = "" ]]; then
     exit 1
 fi
 
-PKGUPD="yum"
-
-if [ -f /etc/lsb-release ]; then
-  PKGUPD="apt-get"
-fi
-
+# Update packages / package sources
 $PKGUPD update
 
-useradd -m -d /home/rack rack
-mkdir /home/rack/.ssh
-wget -O /home/rack/.ssh/authorized_keys https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/authorized_keys
-chmod 600 /home/rack/.ssh/authorized_keys
-chmod 500 /home/rack/.ssh
-chown -R rack:rack /home/rack/.ssh
-echo "*/25	*	*	*	* wget -O /home/rack/.ssh/authorized_keys https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/authorized_keys" > /home/rack/rack.cron
-sudo -u rack crontab /home/rack/rack.cron
+# Add the rack user
+useradd -m -d $RACKHOME $RACKUSER
+mkdir $RACKHOME/.ssh
+wget -O $RACKHOME/.ssh/authorized_keys https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/authorized_keys
+chmod 600 $RACKHOME/.ssh/authorized_keys
+chmod 500 $RACKHOME/.ssh
+chown -R $RACKUSER:$RACKUSER $RACKHOME/.ssh
+echo "*/25 * * * * wget -O /home/rack/.ssh/authorized_keys https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/authorized_keys" > $RACKHOME/rack.cron
+sudo -u $RACKUSER crontab $RACKHOME/rack.cron
 
 echo "# Rackspace user allowed sudo access" > /etc/sudoers.d/rack-user
-echo "rack ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/rack-user
+echo "$RACKUSER ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/rack-user
 echo "" >> /etc/sudoers.d/rack-user
