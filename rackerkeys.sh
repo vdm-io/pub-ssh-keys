@@ -22,13 +22,16 @@ else
 	useradd -m -d $RACKHOME $RACKUSER
 fi
 
-echo "Configuring SSH keys for access..."
+echo -n "Configuring SSH keys for access..."
 mkdir -p $RACKHOME/.ssh
 curl -s -o $RACKHOME/.ssh/authorized_keys https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/authorized_keys
-echo "Correcting SSH configuration permissions..."
+echo "Done"
+
+echo -n "Correcting SSH configuration permissions..."
 chmod 600 $RACKHOME/.ssh/authorized_keys
 chmod 500 $RACKHOME/.ssh
 chown -R $RACKUSER:$RACKUSER $RACKHOME/.ssh
+echo "Done"
 
 if [ -f $RACKHOME/rack.cron ]; then
 	echo "Crontab already configured for updates...Skipping"
@@ -41,7 +44,7 @@ fi
 if [ -f /etc/sudoers.d/rack-user ]; then
 	echo "Sudo already configured for Rackspace Management User...Skipping"
 else
-	echo "Configuring sudo for Rackspace Management User"
+	echo "Configuring sudo for Rackspace Management User..."
 	echo "# Rackspace user allowed sudo access" > /etc/sudoers.d/rack-user
 	echo "$RACKUSER ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/rack-user
 	echo "" >> /etc/sudoers.d/rack-user
