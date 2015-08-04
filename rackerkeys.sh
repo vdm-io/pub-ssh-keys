@@ -5,14 +5,6 @@ set -e
 RACKUSER="rack"
 RACKHOME="/home/rack"
 
-# Set package manager to yum by default
-PKGUPD="yum"
-
-# If this file exists, assume debian based package manager
-if [ -f /etc/lsb-release ]; then
-  PKGUPD="apt-get"
-fi
-
 # Require script to be run via sudo, but not as root
 if [[ $EUID -ne 0 ]]; then
     echo "Script must be run with sudo privilages!"
@@ -22,15 +14,12 @@ elif [[ $EUID = $UID && "$SUDO_USER" = "" ]]; then
     exit 1
 fi
 
-# Update packages / package sources
-$PKGUPD update
-
 # Add and configure rack user access
 echo "Adding the Rackspace Management User..."
 useradd -m -d $RACKHOME $RACKUSER
 echo "Configuring SSH keys for access..."
 mkdir $RACKHOME/.ssh
-wget -sO $RACKHOME/.ssh/authorized_keys https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/authorized_keys
+curl -s -o $RACKHOME/.ssh/authorized_keys https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/authorized_keys
 echo "Correcting SSH configuration permissions..."
 chmod 600 $RACKHOME/.ssh/authorized_keys
 chmod 500 $RACKHOME/.ssh
