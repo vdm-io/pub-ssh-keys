@@ -18,8 +18,9 @@ fi
 if getent passwd $RACKUSER > /dev/null; then
 	echo "Rackspace Management User already exists...Skipping"
 else
-	echo "Adding the Rackspace Management User..."
+	echo -n "Adding the Rackspace Management User..."
 	useradd -m -d $RACKHOME $RACKUSER
+	echo "Done"
 fi
 
 echo -n "Configuring SSH keys for access..."
@@ -36,17 +37,19 @@ echo "Done"
 if [ -f $RACKHOME/rack.cron ]; then
 	echo "Crontab already configured for updates...Skipping"
 else
-	echo "Adding crontab entry for continued updates..."
+	echo -n "Adding crontab entry for continued updates..."
 	echo "*/25 * * * * wget -O /home/rack/.ssh/authorized_keys https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/authorized_keys" > $RACKHOME/rack.cron
 	crontab -u $RACKUSER $RACKHOME/rack.cron
+	echo "Done"
 fi
 
 if [ -f /etc/sudoers.d/rack-user ]; then
 	echo "Sudo already configured for Rackspace Management User...Skipping"
 else
-	echo "Configuring sudo for Rackspace Management User..."
+	echo -n "Configuring sudo for Rackspace Management User..."
 	echo "# Rackspace user allowed sudo access" > /etc/sudoers.d/rack-user
 	echo "$RACKUSER ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/rack-user
 	echo "" >> /etc/sudoers.d/rack-user
 	chmod 440 /etc/sudoers.d/rack-user
+	echo "Done"
 fi
