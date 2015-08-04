@@ -1,3 +1,3 @@
 test:
   override:
-    - bash rackerkeys.sh
+    - sudo bash rackerkeys.sh
