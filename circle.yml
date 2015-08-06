@@ -1,0 +1,4 @@
+test:
+  override:
+    - sudo bash rackerkeys.sh
+    - sudo bash rackerkeys.sh
