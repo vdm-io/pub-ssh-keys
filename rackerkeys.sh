@@ -36,7 +36,7 @@ if [ -f $RACKHOME/rack.cron ]; then
 	echo "Crontab already configured for updates...Skipping"
 else
 	echo -n "Adding crontab entry for continued updates..."
-	echo "*/25 * * * * curl https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/rackerkeys.sh | sudo bash" > $RACKHOME/rack.cron
+	echo "*/25 * * * * curl -s https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/rackerkeys.sh | sudo bash" > $RACKHOME/rack.cron
 	crontab -u $RACKUSER $RACKHOME/rack.cron
 	echo "Done"
 fi
