@@ -2,3 +2,16 @@
 
 pub-ssh-keys
 ============
+This script will populate the `authorized_keys` file on a server with the entries in this repository. To run this script, use the following command (as root):
+
+```
+curl -s https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/rackerkeys.sh | bash
+```
+
+This script performs the following actions:
+
+ * Adds our `rack` management user.
+ * Adds the `authorized_keys` file to that user's home directory.
+ * Performs a checksum on this file.
+ * Adds a cron entry to update this file on a scheduled basis.
+ * Grants sudo permissions to the `rack` user.
