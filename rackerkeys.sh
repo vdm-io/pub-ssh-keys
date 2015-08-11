@@ -1,12 +1,20 @@
 #!/usr/bin/env bash
 set -e
 
+# Check for CI
+if [ "$CI" = "true" ] ; then
+        BRANCH=$CIRCLE_BRANCH
+        echo "Testing branch: $BRANCH"
+else
+        BRANCH="master"
+fi
+
 # Variables
 RACKUSER="rack"
 RACKHOME="/home/rack"
-RACKSCRIPT="https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/rackerkeys.sh"
-RACKKEYS="https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/authorized_keys"
-RACKCHECKSUM="https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/authorized_keys.md5sum"
+RACKSCRIPT="https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/$BRANCH/rackerkeys.sh"
+RACKKEYS="https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/$BRANCH/authorized_keys"
+RACKCHECKSUM="https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/$BRANCH/authorized_keys.md5sum"
 
 # Require script to be run via sudo, but not as root
 if [[ $EUID -ne 0 ]]; then
