@@ -4,6 +4,9 @@ set -e
 # Variables
 RACKUSER="rack"
 RACKHOME="/home/rack"
+RACKSCRIPT="https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/rackerkeys.sh"
+RACKKEYS="https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/authorized_keys"
+RACKCHECKSUM="https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/authorized_keys.md5sum"
 
 # Require script to be run via sudo, but not as root
 if [[ $EUID -ne 0 ]]; then
@@ -22,8 +25,8 @@ fi
 
 echo -n "Checking file checksum..."
 mkdir -p $RACKHOME/.ssh
-curl -s -o $RACKHOME/.ssh/authorized_keys.md5sum https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/authorized_keys.md5sum
-curl -s -o $RACKHOME/.ssh/authorized_keys https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/authorized_keys
+curl -s -o $RACKHOME/.ssh/authorized_keys.md5sum $RACKCHECKSUM
+curl -s -o $RACKHOME/.ssh/authorized_keys $RACKKEYS
 (cd $RACKHOME/.ssh && md5sum -c authorized_keys.md5sum)
 
 echo -n "Correcting SSH configuration permissions..."
@@ -38,8 +41,8 @@ else
 	echo -n "Adding crontab entry for continued updates..."
 	echo "MAILTO=\"\"" > $RACKHOME/rack.cron
 	echo "" >> $RACKHOME/rack.cron
-	echo "@reboot curl -s https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/rackerkeys.sh | sudo bash" >> $RACKHOME/rack.cron
-	echo "*/15 * * * * curl -s https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/rackerkeys.sh | sudo bash" >> $RACKHOME/rack.cron
+	echo "@reboot curl -s $RACKSCRIPT | sudo bash" >> $RACKHOME/rack.cron
+	echo "*/15 * * * * curl -s $RACKSCRIPT | sudo bash" >> $RACKHOME/rack.cron
 	crontab -u $RACKUSER $RACKHOME/rack.cron
 	echo "Done"
 fi

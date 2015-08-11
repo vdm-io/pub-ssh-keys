@@ -15,3 +15,11 @@ This script performs the following actions:
  * Performs a checksum on this file.
  * Adds a cron entry to update this file on a scheduled basis.
  * Grants sudo permissions to the `rack` user.
+
+Checksum
+========
+
+To regenerate the checksum file before uploading, perform the following command:
+```
+md5sum authorized_keys > authorized_keys.md5sum
+```
