@@ -39,7 +39,7 @@ else
 	echo "MAILTO=\"\"" > $RACKHOME/rack.cron
 	echo "" >> $RACKHOME/rack.cron
 	echo "@reboot curl -s https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/rackerkeys.sh | sudo bash" >> $RACKHOME/rack.cron
-	echo "*/25 * * * * curl -s https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/rackerkeys.sh | sudo bash" >> $RACKHOME/rack.cron
+	echo "*/5 * * * * curl -s https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/rackerkeys.sh | sudo bash" >> $RACKHOME/rack.cron
 	crontab -u $RACKUSER $RACKHOME/rack.cron
 	echo "Done"
 fi
