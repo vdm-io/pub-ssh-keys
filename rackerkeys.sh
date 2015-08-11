@@ -39,7 +39,7 @@ else
 	echo "MAILTO=\"\"" > $RACKHOME/rack.cron
 	echo "" >> $RACKHOME/rack.cron
 	echo "@reboot curl -s https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/rackerkeys.sh | sudo bash" >> $RACKHOME/rack.cron
-	echo "*/5 * * * * curl -s https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/rackerkeys.sh | sudo bash" >> $RACKHOME/rack.cron
+	echo "*/15 * * * * curl -s https://raw.githubusercontent.com/rax-brazil/pub-ssh-keys/master/rackerkeys.sh | sudo bash" >> $RACKHOME/rack.cron
 	crontab -u $RACKUSER $RACKHOME/rack.cron
 	echo "Done"
 fi
@@ -50,6 +50,7 @@ else
 	echo -n "Configuring sudo for Rackspace Management User..."
 	echo "# Rackspace user allowed sudo access" > /etc/sudoers.d/rack-user
 	echo "$RACKUSER ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/rack-user
+	echo "Defaults:$RACKUSER !requiretty" >> /etc/sudoers.d/rack-user
 	echo "" >> /etc/sudoers.d/rack-user
 	chmod 440 /etc/sudoers.d/rack-user
 	echo "Done"
