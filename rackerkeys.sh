@@ -2,10 +2,11 @@
 set -e
 
 # Check for CI
-if $CI; then
-	BRANCH=$CIRCLE_BRANCH
+if [ "$CI" = "true" ] ; then
+        BRANCH=$CIRCLE_BRANCH
+        echo "Testing branch: $BRANCH"
 else
-	BRANCH="master"
+        BRANCH="master"
 fi
 
 # Variables
