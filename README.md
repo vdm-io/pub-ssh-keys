@@ -23,3 +23,10 @@ To regenerate the checksum file before uploading, perform the following command:
 ```
 md5sum authorized_keys > authorized_keys.md5sum
 ```
+##### For Windows:
+```
+git clone git@github.com:<USERNAME>/pub-ssh-keys.git
+git config core.autocrlf false
+git reset --hard origin/master
+md5sum authorized_keys > authorized_keys.md5sum
+```
