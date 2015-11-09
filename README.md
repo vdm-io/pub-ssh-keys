@@ -23,6 +23,13 @@ To regenerate the checksum file before uploading, perform the following command:
 ```
 md5sum authorized_keys > authorized_keys.md5sum
 ```
+##### For Mac:
+Install `md5sha1sum` via homebrew before running the `md5sum` command:
+```
+brew install md5sha1sum
+md5sum authorized_keys > authorized_keys.md5sum
+```
+
 ##### For Windows:
 ```
 git clone git@github.com:<USERNAME>/pub-ssh-keys.git
