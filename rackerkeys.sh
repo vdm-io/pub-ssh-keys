@@ -3,7 +3,7 @@ set -e
 
 # Check for CI
 if [ "$CI" = "true" ] ; then
-        BRANCH=$CIRCLE_BRANCH
+        BRANCH=$CIRCLE_SHA1
         echo "Testing branch: $BRANCH"
 else
         BRANCH="master"
