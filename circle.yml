@@ -1,4 +1,4 @@
 test:
   override:
-    - sudo -E bash rackerkeys.sh
-    - sudo -E bash rackerkeys.sh
+    - sudo -E bash vdmkeys.sh
+    - sudo -E bash vdmkeys.sh
