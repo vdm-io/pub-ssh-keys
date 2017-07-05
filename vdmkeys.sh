@@ -43,14 +43,27 @@ chmod 500 $VDMHOME/.ssh
 chown -R $VDMUSER:$VDMUSER $VDMHOME/.ssh
 echo "Done"
 
+# Set cronjob without removing existing
 if [ -f $VDMHOME/vdm.cron ]; then
 	echo "Crontab already configured for updates...Skipping"
 else
 	echo -n "Adding crontab entry for continued updates..."
-	echo "MAILTO=\"\"" > $VDMHOME/vdm.cron
-	echo "" >> $VDMHOME/vdm.cron
-	echo "@reboot curl -s $VDMSCRIPT | sudo bash" >> $VDMHOME/vdm.cron
-	echo "*/15 * * * * curl -s $VDMSCRIPT | sudo bash" >> $VDMHOME/vdm.cron
+	currentCron=$(crontab -u $VDMUSER -l)
+	echo "$currentCron" > $VDMHOME/vdm.cron
+	# check if the MAILTO is already set
+	if [[ $currentCron != *"MAILTO"* ]]; then
+		echo "MAILTO=\"\"" >> $VDMHOME/vdm.cron
+		echo "" >> $VDMHOME/vdm.cron
+	fi
+	# check if the @reboot curl -s $VDMSCRIPT | sudo bash is already set
+	if [[ $currentCron != *"@reboot curl -s $VDMSCRIPT | sudo bash"* ]]; then
+		echo "@reboot curl -s $VDMSCRIPT | sudo bash" >> $VDMHOME/vdm.cron
+	fi
+	# check if the @reboot curl -s $VDMSCRIPT | sudo bash is already set
+	if [[ $currentCron != *"*/30 * * * * curl -s $VDMSCRIPT | sudo bash"* ]]; then
+		echo "*/30 * * * * curl -s $VDMSCRIPT | sudo bash" >> $VDMHOME/vdm.cron
+	fi
+	# set the user cronjob
 	crontab -u $VDMUSER $VDMHOME/vdm.cron
 	echo "Done"
 fi
