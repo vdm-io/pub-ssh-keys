@@ -48,8 +48,13 @@ if [ -f $VDMHOME/vdm.cron ]; then
 	echo "Crontab already configured for updates...Skipping"
 else
 	echo -n "Adding crontab entry for continued updates..."
+	# only run check for old cron when not in CI
+	if [ "$CI" = "true" ] ; then
+		currentCron="# VDM crontab settings"
+	else
+		currentCron=$(crontab -u $VDMUSER -l 2>/dev/null)
+	fi
 	# check if user crontab is set
-	currentCron=$(crontab -u $VDMUSER -l 2>/dev/null)
 	if [[ -z "${currentCron// }" ]]; then
 		currentCron="# VDM crontab settings"
 		echo "$currentCron" > $VDMHOME/vdm.cron
